@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="timer">5:00</div>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown>
+					## ハッカソンを回すのに大事なこと
+					### by HikaruMaruyamaさん
+				</section>
+				<section data-background-image="../images/photo-4611.jpg" data-background-size="contain"></section>
+				<section data-background-image="../images/photo-2320.jpg" data-background-size="contain"></section>
+				<section data-background-image="../images/photo-4579.jpg" data-background-size="contain"></section>
+				<section data-background-image="../images/photo-1897.jpg" data-background-size="contain"></section>
+				<section data-background-image="../images/photo-3297.jpg" data-background-size="contain"></section>
+				<section data-markdown>
+					# 終了！
+					# 🙇🏻‍♂️🙇🏻‍♀️🙇🏻‍♂️🙇🏻‍♀️
+				</section>
+			</div>
+		</div>
+		<audio id="audio" controls>
+			<source src="dora.mp3">
+		</audio>
+		<style>
+			.timer {
+				z-index: 100;
+				font-size: 80px;
+				color: red;
+				padding-top: 0.3em;
+				padding-left: 0.2em;
+				position: absolute;
+			}
+		</style>
+		<script src="js/reveal.js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', e => {
+				let bol = true;
+				document.querySelector('.timer').innerHTML =  "5:00";
+				document.querySelector('body').addEventListener('keydown', e => {
+					if(e.key !== 'ArrowRight') return;
+					if (!bol) return;
+					bol = false;
+					startTimer();
+				});			
+			});
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+
+			function startTimer() {
+				var presentTime = document.querySelector('.timer').innerHTML;
+				var timeArray = presentTime.split(/[:]+/);
+				var m = timeArray[0];
+				var s = checkSecond((timeArray[1] - 1));
+				if(s==59){m=m-1}
+				if (m === '0' && parseInt(s) < 10) {
+					document.querySelector('.timer').style.color = 'yellow';
+					document.querySelector('.timer').style.fontSize = '100px';
+				}
+				if (Reveal.getProgress() === 1) {
+					audio.play();
+					return;
+				}
+				if (m === '0' && s === '00') {
+					document.querySelector('.timer').innerHTML = m + ":" + s;
+					audio.play();
+					Reveal.slide(7);
+				} else {
+					document.querySelector('.timer').innerHTML = m + ":" + s;
+					setTimeout(startTimer, 1000);
+				}
+			}
+			function checkSecond(sec) {
+				if (sec < 10 && sec >= 0) {sec = "0" + sec};
+				if (sec < 0) {sec = "59"};
+				return sec;
+			}
+		</script>
+	</body>
+</html>
